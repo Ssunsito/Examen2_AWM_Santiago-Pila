@@ -199,13 +199,45 @@ const getReservaById = async (req, res) => {
 const updateReserva = async (req, res) => {
     try {
         const { id } = req.params;
-        const { fecha, estado, observaciones, cancha_id, horario_id } = req.body;
+        const { fecha, hora_inicio, hora_fin, estado, observaciones, cancha_id } = req.body;
 
         const reserva = await Reserva.findByPk(id);
         if (!reserva) {
             return res.status(404).json({
                 success: false,
                 message: "Reserva no encontrada"
+            });
+        }
+
+        // Validar formato de horas si se proporcionan
+        const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+        if (hora_inicio && !timeRegex.test(hora_inicio)) {
+            return res.status(400).json({
+                success: false,
+                message: "Formato de hora de inicio inválido. Use HH:MM"
+            });
+        }
+        
+        if (hora_fin && !timeRegex.test(hora_fin)) {
+            return res.status(400).json({
+                success: false,
+                message: "Formato de hora de fin inválido. Use HH:MM"
+            });
+        }
+
+        // Validar que hora_fin sea posterior a hora_inicio si se proporcionan ambas
+        const horaInicioFinal = hora_inicio || reserva.hora_inicio;
+        const horaFinFinal = hora_fin || reserva.hora_fin;
+        
+        const [horaInicioHr, horaInicioMin] = horaInicioFinal.split(':').map(Number);
+        const [horaFinHr, horaFinMin] = horaFinFinal.split(':').map(Number);
+        const minutosInicio = horaInicioHr * 60 + horaInicioMin;
+        const minutosFin = horaFinHr * 60 + horaFinMin;
+
+        if (minutosFin <= minutosInicio) {
+            return res.status(400).json({
+                success: false,
+                message: "La hora de fin debe ser posterior a la hora de inicio"
             });
         }
 
@@ -220,24 +252,14 @@ const updateReserva = async (req, res) => {
             }
         }
 
-        // Verificar que el horario existe si se va a actualizar
-        if (horario_id) {
-            const horario = await Horario.findByPk(horario_id);
-            if (!horario) {
-                return res.status(404).json({
-                    success: false,
-                    message: "Horario no encontrado"
-                });
-            }
-        }
-
         // Actualizar campos
         await reserva.update({
             fecha: fecha || reserva.fecha,
+            hora_inicio: hora_inicio || reserva.hora_inicio,
+            hora_fin: hora_fin || reserva.hora_fin,
             estado: estado || reserva.estado,
             observaciones: observaciones || reserva.observaciones,
-            cancha_id: cancha_id || reserva.cancha_id,
-            horario_id: horario_id || reserva.horario_id
+            cancha_id: cancha_id || reserva.cancha_id
         });
 
         res.status(200).json({
@@ -304,10 +326,6 @@ const getReservasByUsuario = async (req, res) => {
                 {
                     model: Cancha,
                     attributes: ['id', 'nombre', 'tipo']
-                },
-                {
-                    model: Horario,
-                    attributes: ['id', 'hora_inicio', 'hora_fin']
                 }
             ],
             order: [['fecha', 'DESC']]
@@ -337,11 +355,7 @@ const getReservasByCancha = async (req, res) => {
             include: [
                 {
                     model: Usuario,
-                    attributes: ['id', 'correo']
-                },
-                {
-                    model: Horario,
-                    attributes: ['id', 'hora_inicio', 'hora_fin']
+                    attributes: ['id', 'correo', 'nombre', 'apellido']
                 }
             ],
             order: [['fecha', 'DESC']]

@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 
 const seedData = async () => {
     try {
-        console.log('🌱 Iniciando seeding de datos...');
+        console.log(' Iniciando seeding de datos...');
 
         // Limpiar datos existentes
         await sequelize.sync({ force: true });
@@ -14,9 +14,9 @@ const seedData = async () => {
         
         const usuarios = await Usuario.bulkCreate([
             {
-                nombre: 'Juan',
-                apellido: 'Pérez',
-                correo: 'juan@test.com',
+                nombre: 'Santiago',
+                apellido: 'Pila',
+                correo: 'santiago.pila@epn.edu.ec',
                 telefono: '0987654321',
                 password: hashedPassword,
                 rol: 'usuario'
@@ -24,7 +24,7 @@ const seedData = async () => {
             {
                 nombre: 'María',
                 apellido: 'García',
-                correo: 'maria@test.com',
+                correo: 'maria@epn.edu.ec',
                 telefono: '0987654322',
                 password: hashedPassword,
                 rol: 'usuario'
@@ -32,7 +32,7 @@ const seedData = async () => {
             {
                 nombre: 'Admin',
                 apellido: 'Sistema',
-                correo: 'admin@test.com',
+                correo: 'admin@epn.edu.ec',
                 telefono: '0987654323',
                 password: hashedPassword,
                 rol: 'admin'
@@ -44,53 +44,35 @@ const seedData = async () => {
         // Crear canchas de prueba
         const canchas = await Cancha.bulkCreate([
             {
-                nombre: 'Cancha de Fútbol Norte',
+                nombre: 'Cancha 1',
                 tipo: 'futbol',
                 capacidad: 22,
                 estado: 'disponible',
                 descripcion: 'Cancha de fútbol profesional con césped sintético',
-                precio_hora: 25.00
             },
             {
-                nombre: 'Cancha de Fútbol Sur',
+                nombre: 'Cancha 2',
                 tipo: 'futbol',
                 capacidad: 22,
                 estado: 'disponible',
-                descripcion: 'Cancha de fútbol con césped natural',
-                precio_hora: 30.00
+                descripcion: 'Cancha de fútbol profesional con césped sintético',
+
             },
             {
-                nombre: 'Cancha de Tenis 1',
-                tipo: 'tenis',
-                capacidad: 4,
+                nombre: 'Cancha 3',
+                tipo: 'futbol',
+                capacidad: 22,
                 estado: 'disponible',
-                descripcion: 'Cancha de tenis con superficie de arcilla',
-                precio_hora: 15.00
+                descripcion: 'Cancha de fútbol profesional con césped sintético',
             },
             {
-                nombre: 'Cancha de Tenis 2',
-                tipo: 'tenis',
-                capacidad: 4,
+                nombre: 'Cancha 4',
+                tipo: 'futbol',
+                capacidad: 22,
                 estado: 'disponible',
-                descripcion: 'Cancha de tenis con superficie dura',
-                precio_hora: 15.00
-            },
-            {
-                nombre: 'Cancha de Básquet Central',
-                tipo: 'basquet',
-                capacidad: 10,
-                estado: 'disponible',
-                descripcion: 'Cancha de básquet cubierta',
-                precio_hora: 20.00
-            },
-            {
-                nombre: 'Cancha de Vóley',
-                tipo: 'voley',
-                capacidad: 12,
-                estado: 'disponible',
-                descripcion: 'Cancha de vóley al aire libre',
-                precio_hora: 18.00
+                descripcion: 'Cancha de fútbol profesional con césped sintético',
             }
+            
         ]);
 
         console.log('✅ Canchas creadas');
@@ -116,15 +98,40 @@ const seedData = async () => {
         }
 
         console.log('✅ Horarios creados');
+
+        // Crear algunas reservas de ejemplo
+        const { Reserva } = require('./Models');
+        
+        // Obtener fecha de mañana
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const fechaReserva = tomorrow.toISOString().split('T')[0];
+
+        const reservasEjemplo = await Reserva.bulkCreate([
+            {
+                fecha: fechaReserva,
+                hora_inicio: '08:00',
+                hora_fin: '10:00',
+                estado: 'confirmada',
+                observaciones: 'Partido amistoso',
+                usuario_id: usuarios[0].id,
+                cancha_id: canchas[0].id
+            },
+            {
+                fecha: fechaReserva,
+                hora_inicio: '14:00',
+                hora_fin: '16:00',
+                estado: 'pendiente',
+                observaciones: 'Entrenamiento de tenis',
+                usuario_id: usuarios[1].id,
+                cancha_id: canchas[2].id
+            }
+        ]);
+
+        console.log('✅ Reservas de ejemplo creadas');
         console.log('🎉 Seeding completado exitosamente!');
         
         console.log('\n📋 Datos de prueba creados:');
-        console.log('👤 Usuarios:');
-        console.log('   - juan@test.com / 123456');
-        console.log('   - maria@test.com / 123456');
-        console.log('   - admin@test.com / 123456 (admin)');
-        console.log('🏟️ Canchas: 6 canchas de diferentes tipos');
-        console.log('⏰ Horarios: De 6:00 AM a 10:00 PM cada 2 horas');
 
     } catch (error) {
         console.error('❌ Error en seeding:', error);

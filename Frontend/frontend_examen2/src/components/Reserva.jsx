@@ -111,8 +111,8 @@ const Reserva = ({ reserva, onCancelarReserva }) => {
                     <div className="detalle-item">
                         <span className="label">Horario:</span>
                         <span className="value">
-                            {reserva.Horario ? 
-                                `${formatTime(reserva.Horario.hora_inicio)} - ${formatTime(reserva.Horario.hora_fin)}` : 
+                            {reserva.hora_inicio && reserva.hora_fin ? 
+                                `${formatTime(reserva.hora_inicio)} - ${formatTime(reserva.hora_fin)}` : 
                                 'N/A'
                             }
                         </span>

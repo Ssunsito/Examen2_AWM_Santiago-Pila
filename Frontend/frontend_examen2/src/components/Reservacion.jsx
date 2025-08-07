@@ -1,37 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 //import './Reservacion.css';
 
 const Reservacion = ({ cancha, onReservaCreada, onCancelar }) => {
     const [formData, setFormData] = useState({
         fecha: '',
-        horario_id: '',
+        hora_inicio: '',
+        hora_fin: '',
         observaciones: ''
     });
-    const [horarios, setHorarios] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-
-    useEffect(() => {
-        if (cancha) {
-            fetchHorarios();
-        }
-    }, [cancha]);
-
-    const fetchHorarios = async () => {
-        try {
-            const response = await fetch(`http://localhost:8000/api/horarios/cancha/${cancha.id}`);
-            const data = await response.json();
-
-            if (data.success) {
-                setHorarios(data.data);
-            } else {
-                setError('Error al cargar los horarios');
-            }
-        } catch (error) {
-            setError('Error de conexión');
-        }
-    };
 
     const handleChange = (e) => {
         setFormData({
@@ -53,9 +32,17 @@ const Reservacion = ({ cancha, onReservaCreada, onCancelar }) => {
             return;
         }
 
+        // Validar que hora_fin sea posterior a hora_inicio
+        if (formData.hora_inicio >= formData.hora_fin) {
+            setError('La hora de fin debe ser posterior a la hora de inicio');
+            setLoading(false);
+            return;
+        }
+
         const reservaData = {
             fecha: formData.fecha,
-            horario_id: parseInt(formData.horario_id),
+            hora_inicio: formData.hora_inicio,
+            hora_fin: formData.hora_fin,
             cancha_id: cancha.id,
             usuario_id: user.id,
             observaciones: formData.observaciones
@@ -87,10 +74,6 @@ const Reservacion = ({ cancha, onReservaCreada, onCancelar }) => {
         } finally {
             setLoading(false);
         }
-    };
-
-    const formatTime = (time) => {
-        return time.substring(0, 5); // Formato HH:MM
     };
 
     const getMinDate = () => {
@@ -133,21 +116,27 @@ const Reservacion = ({ cancha, onReservaCreada, onCancelar }) => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="horario_id">Horario</label>
-                        <select
-                            id="horario_id"
-                            name="horario_id"
-                            value={formData.horario_id}
+                        <label htmlFor="hora_inicio">Hora de inicio</label>
+                        <input
+                            type="time"
+                            id="hora_inicio"
+                            name="hora_inicio"
+                            value={formData.hora_inicio}
                             onChange={handleChange}
                             required
-                        >
-                            <option value="">Selecciona un horario</option>
-                            {horarios.map(horario => (
-                                <option key={horario.id} value={horario.id}>
-                                    {formatTime(horario.hora_inicio)} - {formatTime(horario.hora_fin)}
-                                </option>
-                            ))}
-                        </select>
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="hora_fin">Hora de fin</label>
+                        <input
+                            type="time"
+                            id="hora_fin"
+                            name="hora_fin"
+                            value={formData.hora_fin}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
 
                     <div className="form-group">

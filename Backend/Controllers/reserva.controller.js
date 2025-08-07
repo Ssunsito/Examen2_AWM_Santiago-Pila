@@ -1,16 +1,38 @@
-const { Reserva, Usuario, Cancha, Horario } = require('../Models');
+const { Reserva, Usuario, Cancha } = require('../Models');
 const { Op } = require('sequelize');
 
 // Crear reserva
 const createReserva = async (req, res) => {
     try {
-        const { fecha, estado, observaciones, usuario_id, cancha_id, horario_id } = req.body;
+        const { fecha, hora_inicio, hora_fin, estado, observaciones, usuario_id, cancha_id } = req.body;
         
         // Validar campos requeridos
-        if (!fecha || !usuario_id || !cancha_id || !horario_id) {
+        if (!fecha || !hora_inicio || !hora_fin || !usuario_id || !cancha_id) {
             return res.status(400).json({ 
                 success: false, 
-                message: "Fecha, usuario_id, cancha_id y horario_id son obligatorios" 
+                message: "Fecha, hora_inicio, hora_fin, usuario_id y cancha_id son obligatorios" 
+            });
+        }
+
+        // Validar formato de horas
+        const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+        if (!timeRegex.test(hora_inicio) || !timeRegex.test(hora_fin)) {
+            return res.status(400).json({
+                success: false,
+                message: "Formato de hora inválido. Use HH:MM"
+            });
+        }
+
+        // Validar que hora_fin sea posterior a hora_inicio
+        const [horaInicioHr, horaInicioMin] = hora_inicio.split(':').map(Number);
+        const [horaFinHr, horaFinMin] = hora_fin.split(':').map(Number);
+        const minutosInicio = horaInicioHr * 60 + horaInicioMin;
+        const minutosFin = horaFinHr * 60 + horaFinMin;
+
+        if (minutosFin <= minutosInicio) {
+            return res.status(400).json({
+                success: false,
+                message: "La hora de fin debe ser posterior a la hora de inicio"
             });
         }
 
@@ -32,15 +54,6 @@ const createReserva = async (req, res) => {
             });
         }
 
-        // Verificar que el horario existe
-        const horario = await Horario.findByPk(horario_id);
-        if (!horario) {
-            return res.status(404).json({
-                success: false,
-                message: "Horario no encontrado"
-            });
-        }
-
         // Verificar que la cancha esté disponible
         if (cancha.estado !== 'disponible') {
             return res.status(400).json({
@@ -49,37 +62,51 @@ const createReserva = async (req, res) => {
             });
         }
 
-        // Verificar que no haya reservas conflictivas
+        // Verificar que no haya reservas conflictivas (solapamiento de horarios)
         const reservaConflictiva = await Reserva.findOne({
             where: {
                 fecha,
                 cancha_id,
-                horario_id,
                 estado: {
                     [Op.notIn]: ['cancelada']
-                }
+                },
+                [Op.or]: [
+                    // La nueva reserva empieza durante una existente
+                    {
+                        hora_inicio: { [Op.lte]: hora_inicio },
+                        hora_fin: { [Op.gt]: hora_inicio }
+                    },
+                    // La nueva reserva termina durante una existente
+                    {
+                        hora_inicio: { [Op.lt]: hora_fin },
+                        hora_fin: { [Op.gte]: hora_fin }
+                    },
+                    // La nueva reserva envuelve una existente
+                    {
+                        hora_inicio: { [Op.gte]: hora_inicio },
+                        hora_fin: { [Op.lte]: hora_fin }
+                    }
+                ]
             }
         });
 
         if (reservaConflictiva) {
             return res.status(400).json({
                 success: false,
-                message: "Ya existe una reserva para esta fecha, cancha y horario"
+                message: "Ya existe una reserva que se solapa con el horario solicitado"
             });
         }
 
         // Crear reserva
         const reserva = await Reserva.create({
             fecha,
+            hora_inicio,
+            hora_fin,
             estado: estado || 'pendiente',
             observaciones,
             usuario_id,
-            cancha_id,
-            horario_id
+            cancha_id
         });
-
-        // Actualizar estado de la cancha
-        await cancha.update({ estado: 'reservada' });
 
         res.status(201).json({
             success: true,
@@ -104,15 +131,11 @@ const getAllReservas = async (req, res) => {
             include: [
                 {
                     model: Usuario,
-                    attributes: ['id', 'correo']
+                    attributes: ['id', 'correo', 'nombre', 'apellido']
                 },
                 {
                     model: Cancha,
                     attributes: ['id', 'nombre', 'tipo']
-                },
-                {
-                    model: Horario,
-                    attributes: ['id', 'hora_inicio', 'hora_fin']
                 }
             ],
             order: [['fecha', 'DESC']]
@@ -141,15 +164,11 @@ const getReservaById = async (req, res) => {
             include: [
                 {
                     model: Usuario,
-                    attributes: ['id', 'correo']
+                    attributes: ['id', 'correo', 'nombre', 'apellido']
                 },
                 {
                     model: Cancha,
                     attributes: ['id', 'nombre', 'tipo']
-                },
-                {
-                    model: Horario,
-                    attributes: ['id', 'hora_inicio', 'hora_fin']
                 }
             ]
         });

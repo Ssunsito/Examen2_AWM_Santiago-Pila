@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+import './styles/override.css';
 import Navigation from './components/Navigation';
 import LoginPage from './components/pages/LoginPage';
 import CanchasPage from './components/pages/CanchasPage';

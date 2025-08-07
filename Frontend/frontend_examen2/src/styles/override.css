@@ -1,0 +1,134 @@
+/* Sobrescritura global de estilos para eliminar fondos de colores */
+
+/* Botones principales */
+.confirmar-reserva-btn,
+.reservar-btn,
+.ver-canchas-btn {
+    background: white !important;
+    color: #667eea !important;
+    border: 2px solid #667eea !important;
+    transition: all 0.3s ease !important;
+}
+
+.confirmar-reserva-btn:hover:not(:disabled),
+.reservar-btn:hover:not(:disabled),
+.ver-canchas-btn:hover {
+    background: #667eea !important;
+    color: white !important;
+}
+
+/* Botones de cancelar */
+.cancelar-reserva-btn,
+.back-btn {
+    background: white !important;
+    color: #6c757d !important;
+    border: 2px solid #6c757d !important;
+    transition: all 0.3s ease !important;
+}
+
+.cancelar-reserva-btn:hover,
+.back-btn:hover {
+    background: #6c757d !important;
+    color: white !important;
+}
+
+/* Botones de eliminar/cancelar */
+.cancelar-reserva-btn.delete,
+.logout-btn {
+    background: white !important;
+    color: #dc3545 !important;
+    border: 2px solid #dc3545 !important;
+}
+
+.cancelar-reserva-btn.delete:hover,
+.logout-btn:hover {
+    background: #dc3545 !important;
+    color: white !important;
+}
+
+/* Estados de reservas - mantener colores pero con fondos blancos */
+.estado-pendiente {
+    background: white !important;
+    color: #856404 !important;
+    border: 2px solid #ffc107 !important;
+}
+
+.estado-confirmada {
+    background: white !important;
+    color: #155724 !important;
+    border: 2px solid #28a745 !important;
+}
+
+.estado-cancelada {
+    background: white !important;
+    color: #721c24 !important;
+    border: 2px solid #dc3545 !important;
+}
+
+.estado-completada {
+    background: white !important;
+    color: #0c5460 !important;
+    border: 2px solid #17a2b8 !important;
+}
+
+/* Mensajes de error y éxito */
+.error-message {
+    background: white !important;
+    color: #721c24 !important;
+    border: 2px solid #dc3545 !important;
+}
+
+.success-message {
+    background: white !important;
+    color: #155724 !important;
+    border: 2px solid #28a745 !important;
+}
+
+/* Contenedores principales */
+.reservacion-container,
+.lista-canchas-container,
+.canchas-page,
+.reservas-page {
+    background: white !important;
+}
+
+/* Tarjetas y cards */
+.reserva-card,
+.cancha-card,
+.reservacion-card {
+    background: white !important;
+    border: 2px solid #e9ecef !important;
+}
+
+/* Loading states */
+.loading {
+    background: white !important;
+    color: #667eea !important;
+}
+
+/* Form elements */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+}
+
+/* Navigation active states */
+.nav-link.active {
+    background: white !important;
+    color: #667eea !important;
+    border: 2px solid #667eea !important;
+}
+
+/* Hover states for form elements */
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #667eea !important;
+}
+
+/* Asegurar que todos los fondos de gradiente se vuelvan blancos */
+*[style*="gradient"] {
+    background: white !important;
+}

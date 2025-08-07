@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 //import './Login.css';
 
-const Login = ({ onLogin, onSwitchToRegister }) => {
+const Login = ({ onLogin, onSwitchToRegister = () => {} }) => {
     const [formData, setFormData] = useState({
         correo: '',
         password: ''

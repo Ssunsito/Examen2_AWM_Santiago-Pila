@@ -25,7 +25,7 @@ const ReservasPage = () => {
 
             const response = await fetch(`http://localhost:8000/api/reservas/usuario/${user.id}`, {
                 headers: {
-                    'Authorization': token
+                    'Authorization': `Bearer ${token}`
                 }
             });
 

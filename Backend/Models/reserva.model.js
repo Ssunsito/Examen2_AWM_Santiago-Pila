@@ -11,6 +11,20 @@ const Reserva = sequelize.define('Reserva', {
         type: DataTypes.DATEONLY,
         allowNull: false
     },
+    hora_inicio: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            is: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
+        }
+    },
+    hora_fin: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            is: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/
+        }
+    },
     estado: {
         type: DataTypes.ENUM('pendiente', 'confirmada', 'cancelada', 'completada'),
         defaultValue: 'pendiente'
@@ -32,14 +46,6 @@ const Reserva = sequelize.define('Reserva', {
         allowNull: false,
         references: {
             model: 'canchas',
-            key: 'id'
-        }
-    },
-    horario_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'horarios',
             key: 'id'
         }
     }

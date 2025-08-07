@@ -1,6 +1,6 @@
 .App {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: white;
 }
 
 .app-header {
@@ -52,17 +52,20 @@
 }
 
 .nav-menu button.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
 }
 
 .logout-btn {
-    background: #dc3545 !important;
-    color: white !important;
+    background: white !important;
+    color: #dc3545 !important;
+    border: 2px solid #dc3545 !important;
 }
 
 .logout-btn:hover {
-    background: #c82333 !important;
+    background: #dc3545 !important;
+    color: white !important;
 }
 
 .app-main {
@@ -76,7 +79,7 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: white;
 }
 
 .loading-spinner {
@@ -124,20 +127,21 @@
 }
 
 .back-btn {
-    background: #6c757d;
-    color: white;
-    border: none;
+    background: white;
+    color: #6c757d;
+    border: 2px solid #6c757d;
     padding: 10px 16px;
     border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     margin-bottom: 20px;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .back-btn:hover {
-    background: #5a6268;
+    background: #6c757d;
+    color: white;
 }
 
 .cancha-actions {
@@ -146,23 +150,27 @@
 }
 
 .reservar-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
     padding: 14px 28px;
     border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .reservar-btn:hover:not(:disabled) {
+    background: #667eea;
+    color: white;
     transform: translateY(-2px);
 }
 
 .reservar-btn:disabled {
-    background: #6c757d;
+    background: white;
+    color: #6c757d;
+    border: 2px solid #6c757d;
     cursor: not-allowed;
     transform: none;
 }
@@ -198,18 +206,20 @@
 }
 
 .ver-canchas-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
     padding: 12px 24px;
     border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .ver-canchas-btn:hover {
+    background: #667eea;
+    color: white;
     transform: translateY(-2px);
 }
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import Login from '../Login';
+import AuthContainer from '../AuthContainer';
 import './LoginPage.css';
 
 const LoginPage = ({ onLogin }) => {
     return (
         <div className="login-page">
-            <Login onLogin={onLogin} />
+            <AuthContainer onLogin={onLogin} />
         </div>
     );
 };

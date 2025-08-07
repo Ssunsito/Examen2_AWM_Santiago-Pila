@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const { authenticateToken, isAdmin } = require('../Middleware/auth.middleware');
 
 // Ejemplo de rutas protegidas que requieren autenticación
@@ -40,4 +38,3 @@ module.exports = function(app) {
         });
     });
 }
-module.exports = router;

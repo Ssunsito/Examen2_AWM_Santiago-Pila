@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const ReservaController = require('../Controllers/reserva.controller');
 
 // Rutas para reservas
@@ -13,4 +11,3 @@ module.exports = function(app) {
     app.delete('/api/reservas/:id', ReservaController.deleteReserva);
     app.put('/api/reservas/:id/cancelar', ReservaController.cancelarReserva);
 }
-module.exports = router;

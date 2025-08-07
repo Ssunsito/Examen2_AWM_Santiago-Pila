@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const CanchaController = require('../Controllers/cancha.controller');
 
 // Rutas para canchas
@@ -12,4 +10,3 @@ module.exports = function(app) {
     app.put('/api/canchas/:id', CanchaController.updateCancha);
     app.delete('/api/canchas/:id', CanchaController.deleteCancha);
 }
-module.exports = router;

@@ -1,0 +1,156 @@
+.cancha-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e1e5e9;
+}
+
+.cancha-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.cancha-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.cancha-icon {
+    font-size: 24px;
+}
+
+.estado {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.estado-disponible {
+    background: #d4edda;
+    color: #155724;
+}
+
+.estado-reservada {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.estado-mantenimiento {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.estado-desconocido {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+.cancha-content {
+    margin-bottom: 15px;
+}
+
+.cancha-nombre {
+    margin: 0 0 8px 0;
+    color: #333;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.cancha-tipo {
+    margin: 0 0 5px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.cancha-capacidad {
+    margin: 0 0 10px 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.cancha-descripcion {
+    margin: 0;
+    color: #888;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.cancha-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.ver-detalles-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.ver-detalles-btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Estilos para vista detallada */
+.cancha-detail {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.cancha-info {
+    margin-top: 20px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item .label {
+    font-weight: 600;
+    color: #555;
+    font-size: 14px;
+}
+
+.info-item .value {
+    color: #333;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .cancha-card {
+        padding: 15px;
+    }
+    
+    .cancha-detail {
+        padding: 20px;
+    }
+    
+    .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}

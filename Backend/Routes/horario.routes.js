@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const HorarioController = require('../Controllers/horario.controller');
 
 // Rutas para horarios
@@ -11,4 +9,4 @@ module.exports = function(app) {
     app.put('/api/horarios/:id', HorarioController.updateHorario);
     app.delete('/api/horarios/:id', HorarioController.deleteHorario);
 }
-module.exports = router;
+
